@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,7 +21,7 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  async getUserById(id: number): Promise<User> {
+  async getUserByPropId(id: number): Promise<User> {
     return this.userModel.findOne({ id }).exec();
   }
 
@@ -33,5 +31,6 @@ export class UsersService {
 
   async removeUser(id: number) {
     return this.userModel.findOneAndDelete({ id });
+    // todo relations
   }
 }

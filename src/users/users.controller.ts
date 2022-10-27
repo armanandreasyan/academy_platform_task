@@ -8,7 +8,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 
@@ -18,12 +18,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
-    console.log(id);
-    return this.usersService.getUserById(+id);
-
-    // todo this
-
+  getUser(@Param('id') id: string) {
+    return this.usersService.getUserByPropId(+id);
   }
 
   @Patch(':id')
