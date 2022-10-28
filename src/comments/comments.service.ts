@@ -9,7 +9,22 @@ import { Comment, CommentDocument } from "./schemas/comment.schema";
 export class CommentsService {
   constructor(
       @InjectModel(Comment.name) private commentModel: Model<CommentDocument>
-  ) {
+  ) {}
+
+  commentValidationCreate(comment : CreateCommentDto) : boolean{
+    const { id, postId, name, email, body } = comment;
+    if (!id || !postId || !name || !email || !body){
+      return true;
+    }
+    return isNaN(+id) || isNaN(+postId) || typeof name !== "string"
+        || typeof email !== "string" || typeof body !== "string";
+  }
+  commentValidationUpdate(comment : UpdateCommentDto) : boolean{
+    const { name, body } = comment;
+    if (!name  || !body){
+      return true;
+    }
+    return typeof name !== "string" || typeof body !== "string";
   }
   createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const createdComment = new this.commentModel(createCommentDto)
