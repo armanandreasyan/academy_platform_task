@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
+import { User, UserDocument } from "./schemas/user.schema";
+import { Post, PostDocument } from "../posts/schemas/post.schema";
+import { Comment, CommentDocument } from "../comments/schemas/comment.schema";
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from "./schemas/user.schema";
-import { Post, PostDocument} from "../posts/schemas/post.schema";
 import {CompanyDocument} from "./schemas/company.schema";
 import {AddressDocument} from "./schemas/address.schema";
+
 
 @Injectable()
 export class UsersService {
   constructor(
       @InjectModel(User.name) private userModel: Model<UserDocument>,
-      @InjectModel(Post.name) private  postModel: Model<PostDocument>
+      @InjectModel(Post.name) private  postModel: Model<PostDocument>,
+      @InjectModel(Comment.name) private commentModel: Model<CommentDocument>
   ) {}
   userValidationCreate(user : CreateUserDto) : boolean {
     const { id, name, username, email, address, phone, website, company } = user;
@@ -67,6 +70,10 @@ export class UsersService {
   }
 
   async removeUser(id: number) {
+    const postIds = await this.postModel.find({ userId: id }, "id");
+    for (let i =0; i < postIds.length; ++i){
+      await this.commentModel.deleteMany({ postId: +postIds[i].id })
+    }
     await this.postModel.deleteMany({ userId: id});
     return this.userModel.findOneAndDelete({ id });
   }

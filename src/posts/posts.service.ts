@@ -36,6 +36,10 @@ export class PostsService {
     return this.postModel.find().exec();
   }
 
+  getPostsByUserId(userId: number){
+    return this.postModel.find({ userId })
+  }
+
   getPostByPropId(id: number): Promise<Post> {
     return this.postModel.findOne({ id }).exec();
   }
@@ -47,8 +51,5 @@ export class PostsService {
   async removePost(id: number) {
     await  this.commentModel.deleteMany({ postId: id });
     return this.postModel.findOneAndDelete({ id });
-  }
-  getPostsByUserId(userId: number){
-    return this.postModel.find({ userId })
   }
 }
