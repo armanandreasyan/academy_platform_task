@@ -9,7 +9,7 @@
 
 ## _Step 1_
 
-Install **_[Node](https://nodejs.org/en/)_**  
+Install **_[NodeJS](https://nodejs.org/en/)_**  
 Install **_[MongoDB](https://www.mongodb.com/docs/manual/installation/)_**  
 Install **_[PostMan](https://www.postman.com/downloads/)_**
 
